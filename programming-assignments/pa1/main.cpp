@@ -17,7 +17,7 @@ void TestFlip()
    PNG ht;
    ht.readFromFile("img-input/JDP_MV_Road.png");
    Block b;
-   b.build(ht, 0,0, 800, 1120);
+   b.build(ht, 0,0, 430, 680);
     cout << "got here (build success)" << endl;
    b.flipHoriz();
     cout << "got here (flipHoriz success)" << endl;
@@ -28,8 +28,6 @@ void TestFlip()
    ht_p.writeToFile("img-out/jdlargeflipcorner.png");
     cout << "got here (writeToFile succes)" << endl;
 }
-
-
 
 int main()
 {
