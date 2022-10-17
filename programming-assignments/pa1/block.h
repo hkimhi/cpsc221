@@ -50,6 +50,6 @@ public:
    int height() const;
 
 private:
-   vector<vector<RGBAPixel>> data;
+   vector<vector<RGBAPixel>> data; //data[0] columns, data[0][0] rows
 };
 #endif

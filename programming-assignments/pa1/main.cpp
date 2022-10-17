@@ -17,16 +17,20 @@ void TestFlip()
    PNG ht;
    ht.readFromFile("img-input/JDP_MV_Road.png");
    Block b;
-   b.build(ht, 0,0, 860, 1360);
-    cout << "got here" << endl;
+   b.build(ht, 0,0, 800, 1120);
+    cout << "got here (build success)" << endl;
    b.flipHoriz();
-    cout << "got here" << endl;
+    cout << "got here (flipHoriz success)" << endl;
 
    PNG ht_p = ht;
    b.render(ht_p, 0,0);
-    cout << "got here" << endl;
+    cout << "got here (render success)" << endl;
    ht_p.writeToFile("img-out/jdlargeflipcorner.png");
+    cout << "got here (writeToFile succes)" << endl;
 }
+
+
+
 int main()
 {
    /**
