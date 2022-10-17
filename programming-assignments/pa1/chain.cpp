@@ -23,6 +23,7 @@ Chain::~Chain()
 void Chain::insertBack(const Block &ndata)
 {
     Node *newNode = new Node(ndata);
+    newNode->next = head_;
     walk(head_, length_)->next = newNode;
     length_ += 1;
 }
@@ -70,7 +71,7 @@ void Chain::reverse()
     Node *prev = nullptr;
     Node *next = nullptr;
 
-    while(curr != nullptr) {
+    while(curr != head_) {
         next = curr->next;
         curr->next = prev;
         
@@ -127,20 +128,13 @@ void Chain::copy(Chain const &other)
     height_ = other.height_;
     width_ = other.width_;
 
-    head_ = new Node();
+    head_ = new Node(other.head_->data);
     head_->next = head_;
 
-    Node *curr = head_;
-    Node *otherCurr = other.head_;
+    Node *otherCurr = other.head_->next;
 
-    while(otherCurr->next != nullptr) {
-        Block data = otherCurr->data;
-
-        curr->next = new Node(data);
-        curr = curr->next;
+    while(otherCurr != other.head_) {
+        insertBack(otherCurr->data);
         otherCurr = otherCurr->next;
-        length_ += 1;
     }
-
-    cout << "COPY: " << (length_ == other.length_) << endl;
 }
