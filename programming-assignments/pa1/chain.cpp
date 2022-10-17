@@ -103,7 +103,16 @@ void Chain::rotate(int k)
  */
 void Chain::clear()
 {
-/* YOUR CODE HERE */
+    Node *toDelete = head_;
+    Node *currDelete = nullptr;
+
+    while(toDelete->next != nullptr) {
+        currDelete = toDelete;
+        toDelete = toDelete->next;
+
+        delete currDelete;
+        currDelete = nullptr;
+    }
 }
 
 /* makes the current object into a copy of the parameter:
@@ -114,5 +123,24 @@ void Chain::clear()
  */
 void Chain::copy(Chain const &other)
 {
-/* YOUR CODE HERE */
+    length_ = 0;
+    height_ = other.height_;
+    width_ = other.width_;
+
+    head_ = new Node();
+    head_->next = head_;
+
+    Node *curr = head_;
+    Node *otherCurr = other.head_;
+
+    while(otherCurr->next != nullptr) {
+        Block data = otherCurr->data;
+
+        curr->next = new Node(data);
+        curr = curr->next;
+        otherCurr = otherCurr->next;
+        length_ += 1;
+    }
+
+    cout << "COPY: " << (length_ == other.length_) << endl;
 }
