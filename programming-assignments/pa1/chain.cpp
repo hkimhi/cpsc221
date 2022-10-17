@@ -11,7 +11,7 @@
  */
 Chain::~Chain()
 {
-    // clear();
+    clear();
 }
 
 /**
@@ -39,27 +39,27 @@ void Chain::swap(int i, int j)
 {
     if(i == j) return;
 
-    if(j < i) {
+    if(i > j) {
         //ensure i is always the smaller index
         int temp = i;
         i = j;
         j = temp;
     }
 
-    Node *node1prev = walk(head_, i-1);
-    Node *node2prev = walk(node1prev, j-i-1);
+    Node *nodeIprev = walk(head_, i-1);
+    Node *nodeJprev = walk(nodeIprev, j-i);
 
     //node1prev is the node BEFORE i
     //node2prev is the node BEFORE j
-    Node *nodeI = node1prev->next;
-    Node *nodeJ = node2prev->next;
+    Node *nodeI = nodeIprev->next;
+    Node *nodeJ = nodeJprev->next;
+
+    nodeIprev->next = nodeJ;
+    nodeJprev->next = nodeI;
 
     Node *temp = nodeI->next;
     nodeI->next = nodeJ->next;
     nodeJ->next = temp;
-
-    node1prev->next = nodeJ;
-    node2prev->next = nodeI;
 }
 
 /**
@@ -96,37 +96,29 @@ void Chain::reverse()
 void Chain::rotate(int k)
 {
     if (k == 1) return;
+    int numSubChains = length_ / k;
 
-    Chain* newChain = new Chain();
-    newChain->width_ = width_;
-    newChain->height_ = height_;
+    /*
+     * subChainStart points to the node before the start of the current subchain
+     * subChainEnd points to the last node of the current subchain
+     */
+    Node *subchainStart = head_;
+    Node *subchainEnd = walk(head_, k);
 
-    Node* curr = head_->next;
-    Node* temp = nullptr;
-    int count = 0;
+    while(numSubChains > 0) {
+        Node* first = subchainStart->next;
+        
+        subchainStart->next = first->next;
+        first->next = subchainEnd->next;
+        subchainEnd->next = first;
+        
+        numSubChains--;
 
-    while (curr != head_) {
-        if (count % k == 0) {
-            if (curr->next == head_) {
-                newChain->insertBack(curr->data);
-            }
-            else {
-                temp = curr;
-            }
+        if(numSubChains != 0) {
+            subchainStart = first;
+            subchainEnd = walk(first, k);
         }
-        else if (count % k == k - 1) {
-            newChain->insertBack(curr->data);
-            newChain->insertBack(temp->data);
-        }
-        else {
-            newChain->insertBack(curr->data);
-        }
-
-        curr = curr->next;
-        count++;
     }
-    copy(*newChain);
-    // newChain->clear();
 }
 
 /**
@@ -135,10 +127,10 @@ void Chain::rotate(int k)
  */
 void Chain::clear()
 {
-    Node *toDelete = head_;
+    Node *toDelete = head_->next;
     Node *currDelete = nullptr;
 
-    while(toDelete->next != nullptr) {
+    while(toDelete != head_) {
         currDelete = toDelete;
         toDelete = toDelete->next;
 
