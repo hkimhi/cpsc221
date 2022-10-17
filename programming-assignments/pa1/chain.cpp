@@ -68,7 +68,7 @@ void Chain::swap(int i, int j)
 void Chain::reverse()
 {
     Node *curr = head_->next;
-    Node *prev = nullptr;
+    Node *prev = head_;
     Node *next = nullptr;
 
     while(curr != head_) {
@@ -126,17 +126,17 @@ void Chain::rotate(int k)
  * current Chain class.
  */
 void Chain::clear()
-{
-    Node *toDelete = head_->next;
-    Node *currDelete = nullptr;
-
-    while(toDelete != head_) {
-        currDelete = toDelete;
-        toDelete = toDelete->next;
-
-        delete currDelete;
-        currDelete = nullptr;
+{   
+    Node *curr = head_->next;
+    Node *next = nullptr;
+    
+    while(curr != head_) {
+        next = curr->next;
+        delete curr;
+        curr = next;
     }
+
+    delete head_;
 }
 
 /* makes the current object into a copy of the parameter:
