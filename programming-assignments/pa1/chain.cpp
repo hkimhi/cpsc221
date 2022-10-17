@@ -22,7 +22,9 @@ Chain::~Chain()
  */
 void Chain::insertBack(const Block &ndata)
 {
-/* YOUR CODE HERE */
+    Node *newNode = new Node(ndata);
+    walk(head_, length_)->next = newNode;
+    length_ += 1;
 }
 
 
@@ -34,7 +36,29 @@ void Chain::insertBack(const Block &ndata)
  */
 void Chain::swap(int i, int j)
 {
-/* YOUR CODE HERE */
+    if(i == j) return;
+
+    if(j < i) {
+        //ensure i is always the smaller index
+        int temp = i;
+        i = j;
+        j = temp;
+    }
+
+    Node *node1prev = walk(head_, i-1);
+    Node *node2prev = walk(node1prev, j-i-1);
+
+    //node1prev is the node BEFORE i
+    //node2prev is the node BEFORE j
+    Node *nodeI = node1prev->next;
+    Node *nodeJ = node2prev->next;
+
+    Node *temp = nodeI->next;
+    nodeI->next = nodeJ->next;
+    nodeJ->next = temp;
+
+    node1prev->next = nodeJ;
+    node2prev->next = nodeI;
 }
 
 /**
@@ -42,7 +66,19 @@ void Chain::swap(int i, int j)
  */
 void Chain::reverse()
 {
-/* YOUR CODE HERE */
+    Node *curr = head_->next;
+    Node *prev = nullptr;
+    Node *next = nullptr;
+
+    while(curr != nullptr) {
+        next = curr->next;
+        curr->next = prev;
+        
+        prev = curr;
+        curr = next;
+    }
+
+    head_->next = prev;
 }
 
 /*
