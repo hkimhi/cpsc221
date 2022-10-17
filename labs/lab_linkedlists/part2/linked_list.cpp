@@ -65,23 +65,24 @@ std::vector<int> to_vector(Node *head)
 void delete_last_element(Node *&head)
 {
     if(head == nullptr) return;
-    
-    if(head->next == nullptr) {
-        delete head;
-        head = nullptr;
-        return;
-    }
 
-    Node *curr = head->next;
-    Node *prev = head;
+    Node *curr = head;
+    Node *prev = nullptr;
 
     while(curr->next != nullptr) {
         prev = curr;
         curr = curr->next;
     }
 
-    delete curr;
-    prev->next = nullptr;
+    if(curr == head) {
+        delete curr;
+        head = nullptr;
+    }
+    else {
+        delete curr;
+        prev->next = nullptr;
+    }
+
     return;
 }
 
@@ -100,7 +101,9 @@ void remove(Node *&head, int oldKey)
     
     if(head->key == oldKey) {
         if(head->next != nullptr) {
-            head=head->next;
+            Node *temp = head->next;
+            delete head;
+            head = temp;
         }
         else {
             delete head;
@@ -166,33 +169,37 @@ void insert_after(Node *head, int oldKey, int newKey)
  */
 Node *interleave(Node *list1, Node *list2)
 {
-    if(list1 == nullptr) {
-        return list2;
+    if(list1 == nullptr && list2 == nullptr) {
+        return nullptr;
     }
-    
-    if(list2 == nullptr) {
-        return list1;
+    else if(list1 == nullptr) {
+        Node *newList = new Node(list2->key, nullptr);
+        Node *currNewList = newList;
+        Node *currList2 = list2->next;
+        while(currList2 != nullptr) {
+            currNewList->next = new Node(currList2->key, nullptr);
+            currList2 = currList2->next;
+            currNewList = currNewList->next;
+        }
+        return newList;
+    }
+    else if (list2 == nullptr) {
+        Node *newList = new Node(list1->key, nullptr);
+        Node *currNewList = newList;
+        Node *currList1 = list1->next;
+        while(currList1 != nullptr) {
+            currNewList->next = new Node(currList1->key, nullptr);
+            currList1 = currList1->next;
+            currNewList = currNewList->next;
+        }
+        return newList;
     }
 
     Node *newList = new Node(list1->key, nullptr);
 
-    if(list1->next == nullptr) {
-        newList->next = list2;
-        return newList;
-    }
-    if(list2->next == nullptr) {
-        newList->next = list1;
-        return newList;
-    }
-
     Node *currNewList = newList;
     Node *currList1 = list1->next;
     Node *currList2 = list2;
-
-    if(currList1 == nullptr) {
-        newList->next = list2;
-        return newList;
-    }
 
     bool useList1 = false;
 
