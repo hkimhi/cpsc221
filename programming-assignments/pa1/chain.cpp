@@ -11,7 +11,7 @@
  */
 Chain::~Chain()
 {
-/* YOUR CODE HERE */
+    // clear();
 }
 
 /**
@@ -95,7 +95,38 @@ void Chain::reverse()
 */
 void Chain::rotate(int k)
 {
-/* YOUR CODE HERE */
+    if (k == 1) return;
+
+    Chain* newChain = new Chain();
+    newChain->width_ = width_;
+    newChain->height_ = height_;
+
+    Node* curr = head_->next;
+    Node* temp = nullptr;
+    int count = 0;
+
+    while (curr != head_) {
+        if (count % k == 0) {
+            if (curr->next == head_) {
+                newChain->insertBack(curr->data);
+            }
+            else {
+                temp = curr;
+            }
+        }
+        else if (count % k == k - 1) {
+            newChain->insertBack(curr->data);
+            newChain->insertBack(temp->data);
+        }
+        else {
+            newChain->insertBack(curr->data);
+        }
+
+        curr = curr->next;
+        count++;
+    }
+    copy(*newChain);
+    // newChain->clear();
 }
 
 /**

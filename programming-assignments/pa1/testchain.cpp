@@ -93,7 +93,7 @@ TEST_CASE("chain::basic rotate k = 2", "[weight=1][part=chain]")
     PNG res = c.render(cols,rows);
 
 
-    //res.writeToFile("img-soln/jdsrotate2.png");
+    res.writeToFile("img-out/jdsrotate2.png");
     PNG expected; expected.readFromFile("img-soln/jdsrotate2.png");
 
     REQUIRE(res == expected);
@@ -113,7 +113,7 @@ TEST_CASE("chain::long rotate k = 12", "[weight=1][part=chain]")
     PNG res = c.render(cols,rows);
 
 
-    //res.writeToFile("img-soln/jdsrotate12.png");
+    res.writeToFile("img-out/jdsrotate12.png");
     PNG expected; expected.readFromFile("img-soln/jdsrotate12.png");
 
     REQUIRE(res == expected);
