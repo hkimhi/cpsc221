@@ -95,7 +95,7 @@ PNG treasureMap::renderMaze()
     {
         for (int j = start.second - 3; j <= start.second + 3; j++)
         {
-            if (i < 0 || i >= (int) shadowMaze.width() || j < 0 || j >= (int) shadowMaze.height())
+            if (i >= 0 || i < (int) shadowMaze.width() || j >= 0 || j < (int) shadowMaze.height())
             {
                 RGBAPixel *currPixel = shadowMaze.getPixel(i, j);
                 currPixel->r = 255;
@@ -130,7 +130,6 @@ bool treasureMap::good(vector<vector<bool>> &v, pair<int, int> curr, pair<int, i
 
 vector<pair<int, int>> treasureMap::neighbors(pair<int, int> curr)
 {
-
     vector<pair<int, int>> neighbors = vector<pair<int, int>>();
     neighbors.push_back(pair<int, int>(curr.first - 1, curr.second));
     neighbors.push_back(pair<int, int>(curr.first, curr.second - 1));
