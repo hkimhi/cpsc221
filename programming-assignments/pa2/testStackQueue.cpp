@@ -3,6 +3,7 @@
 #include "cs221util/catch.hpp"
 #include "stack.h"
 #include "queue.h"
+#include "deque.h"
 //using namespace cs221util;
 using namespace std;
 
@@ -37,4 +38,42 @@ TEST_CASE("queue::basic functions","[weight=1][part=queue]"){
     }
     REQUIRE( result == expected);
 }
+TEST_CASE("deque::basic functions", "[weight=1][part=deque]"){
+    Deque<int> intDeque;
+    vector<int> result;
+    vector<int> expected;
+
+    for (int i = 1; i <= 10; i++) {
+        expected.push_back(i);
+    }
+    for (int i = 1; i <= 10; i++) {
+        intDeque.pushR(i);
+    }
+    while (!intDeque.isEmpty()) {
+        result.push_back(intDeque.popL());
+    }
+    REQUIRE( result == expected);
+}
+TEST_CASE("deque::resize", "[weight=1][part=deque]"){
+    Deque<int> intDeque;
+    vector<int> result;
+    vector<int> expected;
+
+    for (int i = 1; i <= 4; i++) {
+        intDeque.pushR(i);
+    }
+    for (int i = 3; i <= 4; i++) {
+        expected.push_back(i);
+    }
+
+    intDeque.popL();
+    intDeque.popL();
+
+    while (!intDeque.isEmpty()) {
+        result.push_back(intDeque.popL());
+    }
+    REQUIRE( result == expected);
+}
+
+
 
