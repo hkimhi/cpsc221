@@ -8,7 +8,7 @@ template <class T>
 Deque<T>::Deque()
 {
 
-    data = new vector<T>();
+    data = vector<T>();
     n1 = 0;
     n2 = 0;
 }
@@ -39,16 +39,14 @@ T Deque<T>::popL()
     T retItem = data.at(n1);
     n1++;
 
-    if ((n2 - n1) < n1)
+    if ((n2 - n1) <= n1)
     {
-        vector<T> resizedData = new vector<T>();
+        vector<T> resizedData = vector<T>();
         for (int i = n1; i < n2; i++)
         {
             resizedData.push_back(data.at(i));
         }
-        delete data;
         data = resizedData;
-        delete resizedData;
         n1 = 0;
         n2 = data.size();
     }
@@ -64,19 +62,17 @@ T Deque<T>::popL()
 template <class T>
 T Deque<T>::popR()
 {
-    T retItem = data.at(n2);
+    T retItem = data.at(n2 - 1);
     n2--;
 
-    if ((n2 - n1) < n1)
+    if ((n2 - n1) <= n1)
     {
-        vector<T> resizedData = new vector<T>();
+        vector<T> resizedData = vector<T>();
         for (int i = n1; i < n2; i++)
         {
             resizedData.push_back(data.at(i));
         }
-        delete data;
         data = resizedData;
-        delete resizedData;
         n1 = 0;
         n2 = data.size();
     }
