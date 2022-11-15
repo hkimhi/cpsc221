@@ -21,9 +21,9 @@ void treasureMap::setLOB(PNG &im, pair<int, int> loc, int d)
 {
     RGBAPixel *pixel = im.getPixel(loc.first, loc.second);
 
-    int rMask = (pixel->r & 0b110000) >> 4;
-    int gMask = (pixel->g & 0b001100) >> 2;
-    int bMask = pixel->b & 0b000011;
+    int rMask = (d & 0b110000) >> 4;
+    int gMask = (d & 0b001100) >> 2;
+    int bMask = d & 0b000011;
 
     pixel->r = pixel->r & rMask;
     pixel->g = pixel->g & gMask;
@@ -95,7 +95,7 @@ PNG treasureMap::renderMaze()
     {
         for (int j = start.second - 3; j <= start.second + 3; j++)
         {
-            if (i < 0 || i >= shadowMaze.width() || j < 0 || j >= shadowMaze.height())
+            if (i < 0 || i >= (int) shadowMaze.width() || j < 0 || j >= (int) shadowMaze.height())
             {
                 RGBAPixel *currPixel = shadowMaze.getPixel(i, j);
                 currPixel->r = 255;
@@ -110,7 +110,7 @@ PNG treasureMap::renderMaze()
 
 bool treasureMap::good(vector<vector<bool>> &v, pair<int, int> curr, pair<int, int> next)
 {
-    if (next.first < 0 || next.first >= base.width() || next.second < 0 || next.second >= base.height())
+    if (next.first < 0 || next.first >= (int) base.width() || next.second < 0 || next.second >= (int) base.height())
     {
         return false;
     }
