@@ -6,17 +6,19 @@ using namespace std;
 decoder::decoder(const PNG &tm, pair<int, int> s)
     : start(s), mapImg(tm)
 {
-   vector<vector<bool>> maze(mapImg.width(), vector<bool>(mapImg.height()));
-   vector<vector<int>> distance(mapImg.width(), vector<int>(mapImg.height(), -1));
+   pathPts.push_back(start);
+   maze = vector<vector<bool>>(mapImg.width(), vector<bool>(mapImg.height()));
+   vector<vector<int>> distance(mapImg.width(), vector<int>(mapImg.height()));
    vector<vector<pair<int, int>>> parent(mapImg.width(), vector<pair<int, int>>(mapImg.height()));
-
+   pair<int, int> curr;
+   Stack<pair<int, int>> reverseSolution;
    Queue<pair<int, int>> bfs;
 
    maze[start.first][start.second] = true;
    distance[start.first][start.second] = 0;
    parent[start.first][start.second] = start;
    bfs.enqueue(start);
-   pair<int, int> curr;
+
 
    while (!bfs.isEmpty())
    {
@@ -34,13 +36,13 @@ decoder::decoder(const PNG &tm, pair<int, int> s)
       }
    }
 
-   Stack<pair<int, int>> reverseSolution;
 
-   do
+
+   while (curr != start)
    {
       reverseSolution.push(curr);
       curr = parent[curr.first][curr.second];
-   } while (parent[curr.first][curr.second] != curr);
+   }
 
    while (!reverseSolution.isEmpty())
    {
@@ -80,11 +82,14 @@ PNG decoder::renderMaze()
 
       for (pair<int, int> neighbor : neighbors(curr))
       {
-         if (maze[neighbor.first][neighbor.second] && !visited[neighbor.first][neighbor.second])
+         if (neighbor.first >= 0 && neighbor.first < (int)mapImg.width() && neighbor.second >= 0 && neighbor.second < (int)mapImg.height())
          {
-            visited[neighbor.first][neighbor.second] = true;
-            setGrey(shadowMaze, neighbor);
-            bfs.enqueue(neighbor);
+            if (maze[neighbor.first][neighbor.second] && !visited[neighbor.first][neighbor.second])
+            {
+               visited[neighbor.first][neighbor.second] = true;
+               setGrey(shadowMaze, neighbor);
+               bfs.enqueue(neighbor);
+            }
          }
       }
    }
@@ -136,8 +141,10 @@ bool decoder::good(vector<vector<bool>> &v, vector<vector<int>> &d, pair<int, in
       return false;
    }
 
-   if (!compare(*mapImg.getPixel(next.first, next.second), d[curr.first][curr.second]))
-   {
+   RGBAPixel* currPixel = mapImg.getPixel(next.first, next.second);
+
+   if (!compare(*currPixel, d[curr.first][curr.second]))
+   {  
       return false;
    }
 
@@ -157,10 +164,9 @@ vector<pair<int, int>> decoder::neighbors(pair<int, int> curr)
 
 bool decoder::compare(RGBAPixel p, int d)
 {
-   int rBits = (p.r & 0b11) << 4;
-   int gBits = (p.g & 0b11) << 2;
-   int bBits = p.b & 0b11;
-   int distance = rBits | gBits | bBits;
-
-   return (distance == (d + 1) % 64);
+   // int rBits = (p.r & 0b11) << 4;
+   // int gBits = (p.g & 0b11) << 2;
+   // int bBits = p.b & 0b11;
+   // int distance = rBits | gBits | bBits;
+   return ((d + 1) % 64 == ((p.r % 4) * 16 + (p.g % 4) * 4 + (p.b % 4)));
 }
