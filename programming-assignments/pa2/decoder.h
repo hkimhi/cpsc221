@@ -101,7 +101,7 @@ private:
 	pair<int,int> start;  // col,row
 	PNG mapImg; // this image has a maze encoded in it 
     vector<pair<int,int>> pathPts; // vector of points on the solution path
-
+    vector<vector<bool>> maze;
 };
 
 #endif
