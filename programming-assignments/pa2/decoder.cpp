@@ -164,9 +164,5 @@ vector<pair<int, int>> decoder::neighbors(pair<int, int> curr)
 
 bool decoder::compare(RGBAPixel p, int d)
 {
-   // int rBits = (p.r & 0b11) << 4;
-   // int gBits = (p.g & 0b11) << 2;
-   // int bBits = p.b & 0b11;
-   // int distance = rBits | gBits | bBits;
    return ((d + 1) % 64 == ((p.r % 4) * 16 + (p.g % 4) * 4 + (p.b % 4)));
 }
