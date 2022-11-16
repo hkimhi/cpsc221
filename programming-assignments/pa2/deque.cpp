@@ -1,3 +1,9 @@
+//TODO: Error with resizing in pushpopL, either doesn't when it should,
+// or doens't when it shouldn't... can't tell from the test output...
+// more likely is that i'm not resizing early enough
+
+
+
 /**
  * @file deque.cpp
  * Implementation of the Deque class.
@@ -63,9 +69,10 @@ template <class T>
 T Deque<T>::popR()
 {
     T retItem = data.at(n2 - 1);
+    data.pop_back();
     n2--;
 
-    if ((n2 - n1) <= n1)
+    if ((n2 - n1) <=  n1)
     {
         vector<T> resizedData = vector<T>();
         for (int i = n1; i < n2; i++)
@@ -101,7 +108,7 @@ T Deque<T>::peekL()
 template <class T>
 T Deque<T>::peekR()
 {
-    return data.at(n2);
+    return data.at(n2 - 1);
 }
 
 /**
