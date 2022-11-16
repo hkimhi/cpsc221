@@ -40,13 +40,13 @@ TEST_CASE("treasureMap::basic no cycles", "[weight=1][part=treasureMap]")
     treasureMap M(base, maze, start);
 
     PNG treasure = M.renderMap();
-	//treasure.writeToFile("images/embeddedsnake.png");
+	treasure.writeToFile("output/embeddedsnake.png");
     PNG treasureans;
     treasureans.readFromFile("images/embeddedsnake.png");
     REQUIRE( treasure == treasureans );
 
     PNG treasuremaze = M.renderMaze();
-	//treasuremaze.writeToFile("images/greyedsnake.png");
+	treasuremaze.writeToFile("output/greyedsnake.png");
     PNG treasuremazeans;
 	treasuremazeans.readFromFile("images/greyedsnake.png");
     REQUIRE( treasuremaze == treasuremazeans );
@@ -54,13 +54,13 @@ TEST_CASE("treasureMap::basic no cycles", "[weight=1][part=treasureMap]")
     decoder dec(treasure,start);
 
     PNG soln = dec.renderSolution();
-    //soln.writeToFile("images/solnsnake.png");
+    soln.writeToFile("output/solnsnake.png");
     PNG solnans;
     solnans.readFromFile("images/solnsnake.png");
     REQUIRE( soln == solnans );
 
     PNG solnmaze = dec.renderMaze();
-    //solnmaze.writeToFile("images/solnsnakemaze.png");
+    solnmaze.writeToFile("output/solnsnakemaze.png");
     PNG solnmazeans;
     solnmazeans.readFromFile("images/solnsnakemaze.png");
     REQUIRE( solnmaze == solnmazeans );
@@ -79,13 +79,13 @@ TEST_CASE("decoder::basic cycles", "[weight=1][part=decoder]")
     treasureMap M(base, maze, start);
 
     PNG treasure = M.renderMap();
-	//treasure.writeToFile("images/embeddedmaze.png");
+	treasure.writeToFile("output/embeddedmaze.png");
     PNG treasureans;
     treasureans.readFromFile("images/embeddedmaze.png");
     REQUIRE( treasure == treasureans );
 
     PNG treasuremaze = M.renderMaze();
-	//treasuremaze.writeToFile("images/greyedmaze.png");
+	treasuremaze.writeToFile("output/greyedmaze.png");
     PNG treasuremazeans;
 	treasuremazeans.readFromFile("images/greyedmaze.png");
     REQUIRE( treasuremaze == treasuremazeans );
@@ -93,13 +93,13 @@ TEST_CASE("decoder::basic cycles", "[weight=1][part=decoder]")
     decoder dec(treasure,start);
 
     PNG soln = dec.renderSolution();
-    //soln.writeToFile("images/solnmaze.png");
+    soln.writeToFile("output/solnmaze.png");
     PNG solnans;
     solnans.readFromFile("images/solnmaze.png");
     REQUIRE( soln == solnans );
 
     PNG solnmaze = dec.renderMaze();
-    //solnmaze.writeToFile("images/solnmazemaze.png");
+    solnmaze.writeToFile("output/solnmazemaze.png");
     PNG solnmazeans;
     solnmazeans.readFromFile("images/solnmazemaze.png");
     REQUIRE( solnmaze == solnmazeans );
