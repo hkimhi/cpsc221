@@ -97,20 +97,124 @@ long stats::getSumSq(char channel, pair<int, int> ul, int w, int h)
 // see written specification for a description of this function.
 double stats::getVar(pair<int, int> ul, int w, int h)
 {
-    
-    double rVar = sumsqRed[ul.first + w - 1][ul.second + h - 1] -
-                  (pow(sumRed[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
-    double gVar = sumsqGreen[ul.first + w - 1][ul.second + h - 1] -
-                  (pow(sumGreen[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
-    double bVar = sumsqBlue[ul.first + w - 1][ul.second + h - 1] -
-                  (pow(sumBlue[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
+    long red, sqred, blue, sqblue, green, sqgreen;
+    if (ul.first == 0 && ul.second == 0)
+    {
+        red = sumRed[w - 1][h - 1];
+        blue = sumBlue[w - 1][h - 1];
+        green = sumGreen[w - 1][h - 1];
+        sqred = sumsqRed[w - 1][h - 1];
+        sqblue = sumsqBlue[w - 1][h - 1];
+        sqgreen = sumsqGreen[w - 1][h - 1];
+    }
+    else if (ul.first == 0)
+    {
+        red = sumRed[w - 1][ul.second + h - 1] -
+              sumRed[w - 1][ul.second - 1];
+        green = sumGreen[w - 1][ul.second + h - 1] -
+                sumGreen[w - 1][ul.second - 1];
+        blue = sumBlue[w - 1][ul.second + h - 1] -
+               sumBlue[w - 1][ul.second - 1];
+        sqred = sumsqRed[w - 1][ul.second + h - 1] -
+                sumsqRed[w - 1][ul.second - 1];
+        sqgreen = sumsqGreen[w - 1][ul.second + h - 1] -
+                  sumsqGreen[w - 1][ul.second - 1];
+        sqblue = sumsqBlue[w - 1][ul.second + h - 1] -
+                 sumsqBlue[w - 1][ul.second - 1];
+    }
+    else if (ul.second == 0)
+    {
+        red = sumRed[ul.first + w - 1][h - 1] -
+              sumRed[ul.first - 1][h - 1];
+        green = sumGreen[ul.first + w - 1][h - 1] -
+                sumGreen[ul.first - 1][h - 1];
+        blue = sumBlue[ul.first + w - 1][h - 1] -
+               sumBlue[ul.first - 1][h - 1];
+        sqred = sumsqRed[ul.first + w - 1][h - 1] -
+                sumsqRed[ul.first - 1][h - 1];
+        sqgreen = sumsqGreen[ul.first + w - 1][h - 1] -
+                  sumsqGreen[ul.first - 1][h - 1];
+        sqblue = sumsqBlue[ul.first + w - 1][h - 1] -
+                 sumsqBlue[ul.first - 1][h - 1];
+    }
+    else
+    {
+        red = sumRed[ul.first + w - 1][ul.second + h - 1] -
+              sumRed[0][ul.second + h - 1] -
+              sumRed[ul.first + w - 1][0] +
+              sumRed[ul.first - 1][ul.second - 1];
+        green = sumGreen[ul.first + w - 1][ul.second + h - 1] -
+                sumGreen[0][ul.second + h - 1] -
+                sumGreen[ul.first + w - 1][0] +
+                sumGreen[ul.first - 1][ul.second - 1];
+        blue = sumBlue[ul.first + w - 1][ul.second + h - 1] -
+               sumBlue[0][ul.second + h - 1] -
+               sumBlue[ul.first + w - 1][0] +
+               sumBlue[ul.first - 1][ul.second - 1];
+        sqred = sumsqRed[ul.first + w - 1][ul.second + h - 1] -
+                sumsqRed[0][ul.second + h - 1] -
+                sumsqRed[ul.first + w - 1][0] +
+                sumsqRed[ul.first - 1][ul.second - 1];
+        sqgreen = sumsqGreen[ul.first + w - 1][ul.second + h - 1] -
+                  sumsqGreen[0][ul.second + h - 1] -
+                  sumsqGreen[ul.first + w - 1][0] +
+                  sumsqGreen[ul.first - 1][ul.second - 1];
+        sqblue = sumsqBlue[ul.first + w - 1][ul.second + h - 1] -
+                 sumsqBlue[0][ul.second + h - 1] -
+                 sumsqBlue[ul.first + w - 1][0] +
+                 sumsqBlue[ul.first - 1][ul.second - 1];
+    }
+
+    double rVar = sqred - (pow(red, 2) / (w * h));
+    double gVar = sqgreen - (pow(green, 2) / (w * h));
+    double bVar = sqblue - (pow(blue, 2) / (w * h));
 
     return rVar + gVar + bVar;
 }
 
 RGBAPixel stats::getAvg(pair<int, int> ul, int w, int h)
 {
-    return RGBAPixel(sumRed[ul.first + w - 1][ul.second + h - 1] / (w * h),
-                     sumGreen[ul.first + w - 1][ul.second + h - 1] / (w * h),
-                     sumBlue[ul.first + w - 1][ul.second + h - 1] / (w * h));
+    long red, green, blue;
+
+    if (ul.first == 0 && ul.second == 0)
+    {
+        red = sumRed[w - 1][h - 1];
+        blue = sumBlue[w - 1][h - 1];
+        green = sumGreen[w - 1][h - 1];
+    }
+    else if (ul.first == 0)
+    {
+        red = sumRed[w - 1][ul.second + h - 1] -
+              sumRed[w - 1][ul.second - 1];
+        green = sumGreen[w - 1][ul.second + h - 1] -
+                sumGreen[w - 1][ul.second - 1];
+        blue = sumBlue[w - 1][ul.second + h - 1] -
+               sumBlue[w - 1][ul.second - 1];
+    }
+    else if (ul.second == 0)
+    {
+        red = sumRed[ul.first + w - 1][h - 1] -
+              sumRed[ul.first - 1][h - 1];
+        green = sumGreen[ul.first + w - 1][h - 1] -
+                sumGreen[ul.first - 1][h - 1];
+        blue = sumBlue[ul.first + w - 1][h - 1] -
+               sumBlue[ul.first - 1][h - 1];
+    }
+    else
+    {
+        red = sumRed[ul.first + w - 1][ul.second + h - 1] -
+              sumRed[0][ul.second + h - 1] -
+              sumRed[ul.first + w - 1][0] +
+              sumRed[ul.first - 1][ul.second - 1];
+        green = sumGreen[ul.first + w - 1][ul.second + h - 1] -
+                sumGreen[0][ul.second + h - 1] -
+                sumGreen[ul.first + w - 1][0] +
+                sumGreen[ul.first - 1][ul.second - 1];
+        blue = sumBlue[ul.first + w - 1][ul.second + h - 1] -
+               sumBlue[0][ul.second + h - 1] -
+               sumBlue[ul.first + w - 1][0] +
+               sumBlue[ul.first - 1][ul.second - 1];
+    }
+
+    return RGBAPixel(red / (w * h), green / (w * h), blue / (w * h));
 }
