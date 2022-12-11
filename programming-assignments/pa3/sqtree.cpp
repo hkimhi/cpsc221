@@ -52,6 +52,10 @@ SQtree::SQtree(PNG & imIn, double tol) {
 SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
 				 int w, int h, double tol) {
   // Your code here.
+
+  //FROM ERRATA
+  //In SQtree's buildTree , if there are multiple partitions with the same maximum variability, 
+  //choose the bottom-right-most partition.
 }
   
 /**
