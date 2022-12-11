@@ -2,15 +2,15 @@ EXE = pa3
 EXEStats = testStats
 EXESqtree = testSQtree
 OBJS  = pa3.o PNG.o RGBAPixel.o lodepng.o sqtree.o stats.o
-OBJS_S = teststats.o PNG.o RGBAPixel.o lodepng.o stats.o
-OBJS_Q = testsqtree.o PNG.o RGBAPixel.o lodepng.o sqtree.o stats.o
+OBJS_S = testStats.o PNG.o RGBAPixel.o lodepng.o stats.o
+OBJS_Q = testSQtree.o PNG.o RGBAPixel.o lodepng.o sqtree.o stats.o
 
 CXX = clang++
 CXXFLAGS = -std=c++14 -c -g -Og -Wall -Wextra -pedantic
 LD = clang++
 LDFLAGS = -std=c++14 -lpthread -lm
 
-all : pa3 teststats testsqtree
+all : pa3 testStats testSQtree
 
 $(EXE) : $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXE)
