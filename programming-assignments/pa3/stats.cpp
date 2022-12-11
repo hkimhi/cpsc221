@@ -97,53 +97,20 @@ long stats::getSumSq(char channel, pair<int, int> ul, int w, int h)
 // see written specification for a description of this function.
 double stats::getVar(pair<int, int> ul, int w, int h)
 {
-    long red = sumRed[ul.first + w - 1][ul.second + h - 1] -
-               sumRed[0][ul.second + h - 1] -
-               sumRed[ul.first + w - 1][0] +
-               sumRed[ul.first][ul.second];
-    long sqred = sumsqRed[ul.first + w - 1][ul.second + h - 1] -
-                 sumsqRed[0][ul.second + h - 1] -
-                 sumsqRed[ul.first + w - 1][0] +
-                 sumsqRed[ul.first][ul.second];
-    long green = sumGreen[ul.first + w - 1][ul.second + h - 1] -
-                 sumGreen[0][ul.second + h - 1] -
-                 sumGreen[ul.first + w - 1][0] +
-                 sumGreen[ul.first][ul.second];
-    long sqgreen = sumsqGreen[ul.first + w - 1][ul.second + h - 1] -
-                   sumsqGreen[0][ul.second + h - 1] -
-                   sumsqGreen[ul.first + w - 1][0] +
-                   sumsqGreen[ul.first][ul.second];
-    long blue = sumBlue[ul.first + w - 1][ul.second + h - 1] -
-                sumBlue[0][ul.second + h - 1] -
-                sumBlue[ul.first + w - 1][0] +
-                sumBlue[ul.first][ul.second];
-    long sqblue = sumsqBlue[ul.first + w - 1][ul.second + h - 1] -
-                  sumsqBlue[0][ul.second + h - 1] -
-                  sumsqBlue[ul.first + w - 1][0] +
-                  sumsqBlue[ul.first][ul.second];
-
-    double rVar = sqred - (pow(red, 2) / (w * h));
-    double gVar = sqgreen - (pow(green, 2) / (w * h));
-    double bVar = sqblue - (pow(blue, 2) / (w * h));
+    
+    double rVar = sumsqRed[ul.first + w - 1][ul.second + h - 1] -
+                  (pow(sumRed[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
+    double gVar = sumsqGreen[ul.first + w - 1][ul.second + h - 1] -
+                  (pow(sumGreen[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
+    double bVar = sumsqBlue[ul.first + w - 1][ul.second + h - 1] -
+                  (pow(sumBlue[ul.first + w - 1][ul.second + h - 1], 2) / (w * h));
 
     return rVar + gVar + bVar;
 }
 
 RGBAPixel stats::getAvg(pair<int, int> ul, int w, int h)
 {
-
-    long red = sumRed[ul.first + w - 1][ul.second + h - 1] -
-               sumRed[0][ul.second + h - 1] -
-               sumRed[ul.first + w - 1][0] +
-               sumRed[ul.first][ul.second];
-    long green = sumGreen[ul.first + w - 1][ul.second + h - 1] -
-                 sumGreen[0][ul.second + h - 1] -
-                 sumGreen[ul.first + w - 1][0] +
-                 sumGreen[ul.first][ul.second];
-    long blue = sumBlue[ul.first + w - 1][ul.second + h - 1] -
-                sumBlue[0][ul.second + h - 1] -
-                sumBlue[ul.first + w - 1][0] +
-                sumBlue[ul.first][ul.second];
-
-    return RGBAPixel(red / (w * h), green / (w * h), blue / (w * h));
+    return RGBAPixel(sumRed[ul.first + w - 1][ul.second + h - 1] / (w * h),
+                     sumGreen[ul.first + w - 1][ul.second + h - 1] / (w * h),
+                     sumBlue[ul.first + w - 1][ul.second + h - 1] / (w * h));
 }
