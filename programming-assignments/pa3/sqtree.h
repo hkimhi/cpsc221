@@ -151,8 +151,6 @@ class SQtree {
    */
 
   Node* root; // ptr to the root of the SQtree
-  int width_; //width of the original image
-  int height_; //height of the original image
   
   /* BEGIN ============== Required private functions (NOT GIVEN) ====== */
 
@@ -193,7 +191,7 @@ class SQtree {
   /**
    * Private helper method for copy() to recursively copy child nodes into the tree
    */
-  void copy(Node *subroot, Node *othersubroot);
+  void copy(Node *&subroot, Node *othersubroot);
 
   /**
    * Private helper method for size() for recursive calls

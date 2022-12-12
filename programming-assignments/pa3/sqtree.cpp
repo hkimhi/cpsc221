@@ -27,9 +27,6 @@ SQtree::~SQtree() {
 
 // SQtree copy constructor, given.
 SQtree::SQtree(const SQtree & other) {
-  width_ = other.width_;
-  height_ = other.height_;
-
   copy(other);
 }
 
@@ -49,10 +46,8 @@ SQtree::SQtree(PNG & imIn, double tol) {
   //recursively create nodes in the tree until variance <= tol
   stats s = stats(imIn);
   pair<int,int> ul{0,0};
-  width_ = imIn.width();
-  height_ = imIn.height();
 
-  root = buildTree(s, ul, width_, height_, tol);
+  root = buildTree(s, ul, imIn.width(), imIn.height(), tol);
 }
 
 /**
@@ -66,7 +61,7 @@ SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
 
   //create the current node
   Node *curr = new Node(ul, w, h, s.getAvg(ul, w, h), s.getVar(ul, w, h));
-  if(w == h == 1) {
+  if((w == 1) && (h == 1)) {
     // 1x1 pixel, cannot get smaller
     return curr;
   }
@@ -142,19 +137,16 @@ SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
 
   if(bestHeight == 0) {
     //only have SE, SW nodes
-    printf("2 South children\n");
     curr->SE = buildTree(s, ulSE, w-bestWidth, h, tol);
     curr->SW = buildTree(s, ulSW, bestWidth, h, tol);
   }
   else if (bestWidth == 0) {
     //only have NE, SE nodes
-    printf("2 East children\n");
     curr->NE = buildTree(s, ulNE, w, bestHeight, tol);
     curr->SE = buildTree(s, ulSE, w, h-bestHeight, tol);
   }
   else {
     //have all 4 child nodes
-    printf("4 children\n");
     curr->NW = buildTree(s, ulNW, bestWidth, bestHeight, tol);
     curr->NE = buildTree(s, ulNE, w-bestWidth, bestHeight, tol);
     curr->SE = buildTree(s, ulSE, w-bestWidth, h-bestHeight, tol);
@@ -168,7 +160,7 @@ SQtree::Node * SQtree::buildTree(stats & s, pair<int,int> & ul,
  * Render SQtree and return the resulting image.
  */
 PNG SQtree::render() {
-  PNG img = PNG(width_, height_);
+  PNG img = PNG(root->width, root->height);
   render(img, root);
 
   img.writeToFile("images/output.png");
@@ -178,31 +170,9 @@ PNG SQtree::render() {
 
 void SQtree::render(PNG &img, Node *subroot) {
   //only want to render a node if it is a leaf
-  bool shouldRenderCurrent = true;
+  if(subroot == NULL) return;
 
-  if(subroot->NW != NULL) {
-    shouldRenderCurrent = false;
-    render(img, subroot->NW);
-  }
-  if(subroot->NE != NULL) {
-    shouldRenderCurrent = false;
-    render(img, subroot->NE);
-  }
-  if(subroot->SE != NULL) {
-    shouldRenderCurrent = false;
-    render(img, subroot->SE);
-  }
-  if(subroot->SW != NULL) {
-    shouldRenderCurrent = false;
-    render(img, subroot->SW);
-  }
-
-  if(shouldRenderCurrent) {
-    // printf("rendering @ (%d,%d) to (%d,%d)\n", subroot->upLeft.first, subroot->upLeft.second, subroot->upLeft.first + subroot->width, subroot->upLeft.second + subroot->height);
-    if(subroot->width > 1 || subroot->height > 1) {
-      printf("rendering @ (%d, %d) to (%d, %d)\n", subroot->upLeft.first, subroot->upLeft.second, subroot->upLeft.first + subroot->width, subroot->upLeft.second + subroot->height);
-    }
-    
+  if(subroot->NW==NULL && subroot->NE == NULL && subroot->SE == NULL && subroot->SW == NULL) {
     //SUBROOT has no children --> it is a leaf --> draw it on img
     //iterate through all pixels and set them to avg
     for(int x = subroot->upLeft.first; x < subroot->upLeft.first + subroot->width; x++) {
@@ -212,7 +182,13 @@ void SQtree::render(PNG &img, Node *subroot) {
       }
     }
   }
+
+  render(img, subroot->NW);
+  render(img, subroot->NE);
+  render(img, subroot->SE);
+  render(img, subroot->SW);
 }
+
 
 /**
  * Delete allocated memory.
@@ -236,14 +212,22 @@ void SQtree::copy(const SQtree & other) {
   copy(root, other.root);
 }
 
-void SQtree::copy(Node *subroot, Node *othersubroot) {
+void SQtree::copy(Node *&subroot, Node *othersubroot) {
   if(othersubroot == NULL) {
-    subroot = NULL;
     return;
   }
 
-  subroot = othersubroot;
+  subroot->upLeft = othersubroot->upLeft;
+  subroot->width = othersubroot->width;
+  subroot->height = othersubroot->height;
+  subroot->avg = othersubroot->avg;
+  subroot->var = othersubroot->var;
+  subroot->NW = NULL;
+  subroot->NE = NULL;
+  subroot->SE = NULL;
+  subroot->SW = NULL;
 
+  
   copy(subroot->NW, othersubroot->NW);
   copy(subroot->NE, othersubroot->NE);
   copy(subroot->SE, othersubroot->SE);
