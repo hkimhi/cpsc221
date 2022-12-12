@@ -65,13 +65,73 @@ long stats::getSum(char channel, pair<int, int> ul, int w, int h)
     switch (channel)
     {
     case 'r':
-        return sumRed[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumRed[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumRed[w - 1][ul.second + h - 1] -
+                   sumRed[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumRed[ul.first + w - 1][h - 1] -
+                   sumRed[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumRed[ul.first + w - 1][ul.second + h - 1] -
+                   sumRed[0][ul.second + h - 1] -
+                   sumRed[ul.first + w - 1][0] +
+                   sumRed[ul.first - 1][ul.second - 1];
+        }
         break;
     case 'g':
-        return sumGreen[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumGreen[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumGreen[w - 1][ul.second + h - 1] -
+                   sumGreen[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumGreen[ul.first + w - 1][h - 1] -
+                   sumGreen[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumGreen[ul.first + w - 1][ul.second + h - 1] -
+                   sumGreen[0][ul.second + h - 1] -
+                   sumGreen[ul.first + w - 1][0] +
+                   sumGreen[ul.first - 1][ul.second - 1];
+        }
         break;
     case 'b':
-        return sumBlue[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumBlue[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumBlue[w - 1][ul.second + h - 1] -
+                   sumBlue[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumBlue[ul.first + w - 1][h - 1] -
+                   sumBlue[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumBlue[ul.first + w - 1][ul.second + h - 1] -
+                   sumBlue[0][ul.second + h - 1] -
+                   sumBlue[ul.first + w - 1][0] +
+                   sumBlue[ul.first - 1][ul.second - 1];
+        }
         break;
     }
 }
@@ -81,13 +141,73 @@ long stats::getSumSq(char channel, pair<int, int> ul, int w, int h)
     switch (channel)
     {
     case 'r':
-        return sumsqRed[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumsqRed[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumsqRed[w - 1][ul.second + h - 1] -
+                   sumsqRed[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumsqRed[ul.first + w - 1][h - 1] -
+                   sumsqRed[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumsqRed[ul.first + w - 1][ul.second + h - 1] -
+                   sumsqRed[0][ul.second + h - 1] -
+                   sumsqRed[ul.first + w - 1][0] +
+                   sumsqRed[ul.first - 1][ul.second - 1];
+        }
         break;
     case 'g':
-        return sumsqGreen[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumsqGreen[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumsqGreen[w - 1][ul.second + h - 1] -
+                   sumsqGreen[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumsqGreen[ul.first + w - 1][h - 1] -
+                   sumsqGreen[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumsqGreen[ul.first + w - 1][ul.second + h - 1] -
+                   sumsqGreen[0][ul.second + h - 1] -
+                   sumsqGreen[ul.first + w - 1][0] +
+                   sumsqGreen[ul.first - 1][ul.second - 1];
+        }
         break;
     case 'b':
-        return sumsqBlue[ul.first + w - 1][ul.second + h - 1];
+        if (ul.first == 0 && ul.second == 0)
+        {
+            return sumsqBlue[w - 1][h - 1];
+        }
+        else if (ul.first == 0)
+        {
+            return sumsqBlue[w - 1][ul.second + h - 1] -
+                   sumsqBlue[w - 1][ul.second - 1];
+        }
+        else if (ul.second == 0)
+        {
+            return sumsqBlue[ul.first + w - 1][h - 1] -
+                   sumsqBlue[ul.first - 1][h - 1];
+        }
+        else
+        {
+            return sumsqBlue[ul.first + w - 1][ul.second + h - 1] -
+                   sumsqBlue[0][ul.second + h - 1] -
+                   sumsqBlue[ul.first + w - 1][0] +
+                   sumsqBlue[ul.first - 1][ul.second - 1];
+        }
         break;
     }
 }
