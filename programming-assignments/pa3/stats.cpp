@@ -14,29 +14,28 @@ stats::stats(PNG &im)
     {
         for (int y = 0; y < im.height(); y++)
         {
-            if (x == 0)
+            if (x == 0 && y == 0)
             {
                 RGBAPixel *px = im.getPixel(x, y);
-
-                if (y == 0)
-                {
-                    sumRed[x][y] = px->r;
-                    sumsqRed[x][y] = pow(px->r, 2);
-                    sumGreen[x][y] = px->g;
-                    sumsqGreen[x][y] = pow(px->g, 2);
-                    sumBlue[x][y] = px->b;
-                    sumsqBlue[x][y] = pow(px->b, 2);
-                }
-                else
-                {
-                    sumRed[x][y] = px->r + sumRed[x][y - 1];
-                    sumsqRed[x][y] = pow(px->r, 2) + sumsqRed[x][y - 1];
-                    sumGreen[x][y] = px->g + sumGreen[x][y - 1];
-                    sumsqGreen[x][y] = pow(px->g, 2) + sumsqGreen[x][y - 1];
-                    sumBlue[x][y] = px->b + sumBlue[x][y - 1];
-                    sumsqBlue[x][y] = pow(px->b, 2) + sumsqBlue[x][y - 1];
-                }
+                sumRed[x][y] = px->r;
+                sumsqRed[x][y] = pow(px->r, 2);
+                sumGreen[x][y] = px->g;
+                sumsqGreen[x][y] = pow(px->g, 2);
+                sumBlue[x][y] = px->b;
+                sumsqBlue[x][y] = pow(px->b, 2);
             }
+
+            else if (x == 0)
+            {
+                RGBAPixel *px = im.getPixel(x, y);
+                sumRed[x][y] = px->r + sumRed[x][y - 1];
+                sumsqRed[x][y] = pow(px->r, 2) + sumsqRed[x][y - 1];
+                sumGreen[x][y] = px->g + sumGreen[x][y - 1];
+                sumsqGreen[x][y] = pow(px->g, 2) + sumsqGreen[x][y - 1];
+                sumBlue[x][y] = px->b + sumBlue[x][y - 1];
+                sumsqBlue[x][y] = pow(px->b, 2) + sumsqBlue[x][y - 1];
+            }
+
             else
             {
                 sumRed[x][y] = sumRed[x - 1][y];
