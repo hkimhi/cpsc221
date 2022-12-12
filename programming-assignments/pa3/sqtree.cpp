@@ -209,6 +209,7 @@ void SQtree::clear(Node *subroot) {
 }
 
 void SQtree::copy(const SQtree & other) {
+  root = new Node(other.root->upLeft, other.root->width, other.root->height, other.root->avg, other.root->var);
   copy(root, other.root);
 }
 
@@ -216,18 +217,22 @@ void SQtree::copy(Node *&subroot, Node *othersubroot) {
   if(othersubroot == NULL) {
     return;
   }
-
-  subroot->upLeft = othersubroot->upLeft;
-  subroot->width = othersubroot->width;
-  subroot->height = othersubroot->height;
-  subroot->avg = othersubroot->avg;
-  subroot->var = othersubroot->var;
-  subroot->NW = NULL;
-  subroot->NE = NULL;
-  subroot->SE = NULL;
-  subroot->SW = NULL;
-
   
+  //fill nodes with data
+  if(othersubroot->NW != NULL) {
+    subroot->NW = new Node(othersubroot->NW->upLeft, othersubroot->NW->width, othersubroot->NW->height, othersubroot->NW->avg, othersubroot->NW->var);
+  }
+  if(othersubroot->NE != NULL) {
+    subroot->NE = new Node(othersubroot->NE->upLeft, othersubroot->NE->width, othersubroot->NE->height, othersubroot->NE->avg, othersubroot->NE->var);
+  }
+  if(othersubroot->SE != NULL) {
+    subroot->SE = new Node(othersubroot->SE->upLeft, othersubroot->SE->width, othersubroot->SE->height, othersubroot->SE->avg, othersubroot->SE->var);
+  }
+  if(othersubroot->SW != NULL) {
+    subroot->SW = new Node(othersubroot->SW->upLeft, othersubroot->SW->width, othersubroot->SW->height, othersubroot->SW->avg, othersubroot->SW->var);
+  }
+
+  //call copy on children
   copy(subroot->NW, othersubroot->NW);
   copy(subroot->NE, othersubroot->NE);
   copy(subroot->SE, othersubroot->SE);
