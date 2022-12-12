@@ -67,7 +67,7 @@ TEST_CASE("sqtree::big tolerance construction and render","[weight=1][part=sqtre
     PNG result = t1.render();
 
     // REMOVE FOR TESTING
-        result.writeToFile("images/soln/van5590.png");
+    //  result.writeToFile("images/soln/van5590.png");
 
     PNG expected; 
     expected.readFromFile("images/soln/van5590.png");
